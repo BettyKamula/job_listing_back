@@ -6,14 +6,20 @@
   "repository": "https://github.com/BettyKamula/job_listing_back.git",
   "author": "Elizabeth Kamula",
   "license": "MIT",
+  "scripts": {
+    "start-dev": "nodemon --env-file=.env --exec babel-node src/index.js",
+    "start": "node -r @babel/register src/index.js"
+  },
   "dependencies": {
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.4",
     "@babel/register": "^7.24.6",
-    "express": "^4.21.0"
+    "express": "^4.21.0",
+    "mongoose": "^8.6.2"
   },
   "devDependencies": {
     "@babel/node": "^7.25.0",
+    "nodemon": "^3.1.4",
     "prettier": "3.3.3"
   }
 }
