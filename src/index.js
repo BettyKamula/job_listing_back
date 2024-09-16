@@ -1,12 +1,9 @@
 import express from 'express';
 import { ConnectDB } from './db';
+import usersRouter from './modules/users';
 
 const app = express();
-app.use(express.json());
-
-app.get('/', (req, res) => {
-  res.send('Hello world');
-});
+app.use(usersRouter);
 
 const port = process.env.PORT;
 app.listen(port, async () => {
