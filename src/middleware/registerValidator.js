@@ -1,4 +1,4 @@
-import { check, query, validationResult } from 'express-validator';
+import { check } from 'express-validator';
 
 const registerValidator = () => {
   return [

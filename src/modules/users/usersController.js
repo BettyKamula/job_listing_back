@@ -17,14 +17,12 @@ export class UsersController {
       };
       const user = await User.create(payload);
       await user.save();
-      console.log(user);
       return res.status(201).json({
         success: true,
         status: 201,
         message: 'user successfully added',
       });
     } catch (error) {
-      console.log(error);
       if (error.errorResponse.code === 11000) {
         return res.status(409).json({
           success: false,

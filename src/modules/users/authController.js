@@ -30,9 +30,9 @@ export class AuthController {
       const token = jwt.sign({ userId: user._id }, '1234', {
         expiresIn: '1hr',
       });
+      await Users.updateOne({ email }, { accessToken: token });
       return handleResponse(res, 200, true, 'login successful', token);
     } catch (e) {
-      console.log('error', e);
       return handleResponse(res, 500, false, 'oops something went wrong');
     }
   }
