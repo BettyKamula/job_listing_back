@@ -3,6 +3,7 @@ import { ConnectDB } from './db';
 import usersRouter from './modules/users';
 
 const app = express();
+app.use(express.json());
 app.use(usersRouter);
 
 const port = process.env.PORT;
