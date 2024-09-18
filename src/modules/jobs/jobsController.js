@@ -30,4 +30,46 @@ export class JobsController {
       return handleResponse(res, 500, false, 'oops something went wrong');
     }
   }
+
+  static async get_jobs(req, res) {
+    try {
+      const jobs = await JobSchema.find({});
+      return handleResponse(res, 200, true, 'Jobs fetched successfully', jobs);
+    } catch (e) {
+      return handleResponse(res, 500, false, 'oops something went wrong');
+    }
+  }
+
+  static async update_job(req, res) {
+    const { jobId } = req.params;
+    try {
+      const options = {
+        new: true,
+      };
+      const job = await JobSchema.findById({ _id: jobId });
+      if (!job) {
+        handleResponse(res, 400, false, 'The job does not exist');
+      }
+      const data = await JobSchema.findByIdAndUpdate(jobId, req.body, options);
+
+      handleResponse(res, 200, true, 'Updated Successfully', data);
+    } catch (e) {
+      handleResponse(res, 500, false, 'Oops something went wrong');
+    }
+  }
+
+  static async delete_job(req, res) {
+    const { jobId } = req.params;
+    try {
+      const job = await JobSchema.findById({ _id: jobId });
+      if (!job) {
+        handleResponse(res, 400, false, 'The job does not exist');
+      }
+      await JobSchema.findByIdAndDelete(jobId);
+
+      handleResponse(res, 200, true, 'deleted Successfully');
+    } catch (e) {
+      handleResponse(res, 500, false, 'Oops something went wrong');
+    }
+  }
 }
