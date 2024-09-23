@@ -33,7 +33,19 @@ export class JobsController {
 
   static async get_jobs(req, res) {
     try {
-      const jobs = await JobSchema.find({});
+      const { search } = req.query;
+      let query = {};
+      if (search) {
+        query.$or = [
+          { title: { $regex: search, $options: 'i' } },
+          { description: { $regex: search, $options: 'i' } },
+          { company: { $regex: search, $options: 'i' } },
+        ];
+      }
+      const jobs = await JobSchema.find(query).populate(
+        'postedBy',
+        'username email'
+      );
       return handleResponse(res, 200, true, 'Jobs fetched successfully', jobs);
     } catch (e) {
       return handleResponse(res, 500, false, 'oops something went wrong');
