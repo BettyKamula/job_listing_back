@@ -42,10 +42,9 @@ export class JobsController {
           { company: { $regex: search, $options: 'i' } },
         ];
       }
-      const jobs = await JobSchema.find(query).populate(
-        'postedBy',
-        'username email'
-      );
+      const jobs = await JobSchema.find(query)
+        .populate('postedBy', 'username email')
+        .populate('appliedBy', 'email firstName lastName');
       return handleResponse(res, 200, true, 'Jobs fetched successfully', jobs);
     } catch (e) {
       return handleResponse(res, 500, false, 'oops something went wrong');
@@ -82,6 +81,30 @@ export class JobsController {
       handleResponse(res, 200, true, 'deleted Successfully');
     } catch (e) {
       handleResponse(res, 500, false, 'Oops something went wrong');
+    }
+  }
+
+  static async apply_job(req, res) {
+    console.log('req user', req.user);
+    const { _id } = req.user;
+    const { jobId } = req.body;
+    try {
+      const job = await JobSchema.findById({ _id: jobId });
+      if (!job) {
+        handleResponse(res, 400, false, 'The job does not exist');
+      }
+      if (job.appliedBy.includes(req.user._id))
+        return handleResponse(
+          res,
+          409,
+          true,
+          'You have  already applied for this job'
+        );
+      job.appliedBy.push(_id);
+      await job.save();
+      return handleResponse(res, 200, true, 'Job application successful');
+    } catch (error) {
+      handleResponse(res, 500, false, 'Something went wrong');
     }
   }
 }
