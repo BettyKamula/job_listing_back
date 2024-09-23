@@ -15,6 +15,7 @@ export const ValidateToken = async (req, res, next) => {
     }
     next();
   } catch (e) {
+    console.log('error', e);
     return handleResponse(res, 500, false, 'oops something went wrong');
   }
 };
