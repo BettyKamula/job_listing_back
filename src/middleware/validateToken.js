@@ -13,6 +13,7 @@ export const ValidateToken = async (req, res, next) => {
     if (user.accessToken !== token) {
       return handleResponse(res, 401, false, 'invalid token');
     }
+    req.user = user;
     next();
   } catch (e) {
     console.log('error', e);
